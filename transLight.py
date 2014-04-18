@@ -6,7 +6,7 @@
 #
 # Created:     15/11/2013
 # Copyright:   (c) Robert Walker 2013
-# Licence:
+# Licence:     GPLv3
 #-------------------------------------------------------------------------------
 
 import telnet as tel
