@@ -120,7 +120,9 @@ class Telnet(tel.Telnet):
 
 
 def main():
-    test = Telnet('192.168.0.177', 2004)
+    test = Telnet('192.168.0.107', 5250)
+    test.open()
+    test.close()
 
 if __name__ == '__main__':
     main()

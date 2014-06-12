@@ -15,7 +15,7 @@ Videohub, not just our micro"""
 
 import telnet as tel
 
-host = 'localhost'
+host = '192.168.10.241'
 port = '9990'
 
 
