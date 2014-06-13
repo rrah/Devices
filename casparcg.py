@@ -26,20 +26,26 @@ class Casparcg(tel.Telnet):
     def runTemplate(self, template, channel = 1, layer = 20, flayer = 1, f0 = None):
         
         self.open()
+        sleep(0.01)
         cmd = "CG {}-{} ADD {} \"{}\" 1 \"<templateData><componentData id=\\\"f0\\\"><data id=\\\"text\\\" value=\\\"{}\\\"/></componentData></templateData>\"\r\n".format(channel, layer, flayer, template, f0)
         self.write(cmd)
+        sleep(0.01)
         self.close()
         
     def stop(self, channel, layer, flayer):
         
         self.open()
+        sleep(0.01)
         self.write('CG {}-{} STOP {}\r\n'.format(channel, layer, flayer))
+        sleep(0.01)
         self.close()
     
     def clear(self, channel, layer):
         
         self.open()
+        sleep(0.01)
         self.write('CG {}-{} CLEAR\r\n'.format(channel, layer))
+        sleep(0.01)
         self.close()
     
     def __init__(self, host = None, port = None):
