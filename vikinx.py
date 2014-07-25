@@ -1,26 +1,62 @@
-import telnet as tel
-from binascii import hexlify as binhex
+# import telnet as tel
+import socket
+from binascii import hexlify
+from time import sleep
 
-host = 'localhost'
+host = '192.168.0.100'
 port = 2001
 
-class vikinx(tel.Telnet):
+class vikinx():
+
+    def open(self):
+    
+        self.socket = socket.create_connection((host, port))
+        
+    def write(self, text):
+        
+        print type(text), type('')
+        if type(text) == type(str):
+            raise TypeError('Must be string')
+        else:
+            self.socket.send(bytearray.fromhex(text))
+        
+    def read(self):
+        
+        return hexlify(self.socket.recv(100))
+        
+    def close(self):
+    
+        self.socket.close()
     
     def update(self):
         
         """
         Get routing information and update object connections"""
-        
+
         self.open()
-        self.write(bytearray.fromhex('c000'))
-        output = binhex(self.read_until('c000'))
+        self.write('c000')
+        sleep(0.1)
+        output = self.read()
+        print type(output)
         self.close()
+        routing = []
+        for i in range(0, len(output)/6):
+            routing.append([output[i * 6 + 2:i * 6 + 4], 
+                            output[i * 6 + 4:i * 6 + 6]])
+        print routing
         
-        output = output.split['a0']
-        for out in output:
-            out = [out[0:2], out[2, 4]]
-        print output
+    def __init__(self, host, port):
+    
+        self.host = host
+        self.port = port
         
         
-vik = vikinx()
-vik.update
+vik = vikinx(host, port)
+vik.update()
+
+
+# vik = soc.create_connection((host, port))
+# vik.send(bytearray.fromhex('c000'))
+# sleep(0.1)
+# output = vik.recv(100)
+# print hexlify(output)
