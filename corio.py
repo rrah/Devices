@@ -15,30 +15,14 @@ from time import sleep
 
 class Corio(tel.Telnet):
 
-
-    def checkResponse(self, response):
-
-        """
-        See if the response is actually a good one or not"""
-
-        if response == '>':
-            return True
-        else:
-            return False
-
     def fadeSpeed(self, speed):
 
         """
         int speed = 1 - 25 set speed of fades"""
 
         self.open()
-        self.write('fade speed={}'.format(speed))
-        response = self.read_until('>', 0.1)
+        self.write('fade speed={}\r\n'.format(speed))
         self.close()
-        if self.checkResponse(response):
-            return True
-        else:
-            return False
 
     def fade(self, in_):
 
@@ -49,16 +33,10 @@ class Corio(tel.Telnet):
 
         self.open()
         if in_:
-            self.write('fade=1')
+            self.write('fade=1\r\n')
         else:
-            self.write('fade=0')
-        sleep(0.1)
-        response = self.read_until('>', 0.1)
+            self.write('fade=0\r\n')
         self.close()
-        if self.checkResponse(response):
-            return True
-        else:
-            return False
 
     def __init__(self, host, port, *args, **kwargs):
         tel.Telnet.__init__(self, host, port, *args, **kwargs)
@@ -66,7 +44,11 @@ class Corio(tel.Telnet):
 
 
 def main():
-    pass
+    cor = Corio('localhost', 2000)
+    cor.fadeSpeed(5)
+    cor.fade(True)
+    sleep(10)
+    cor.fade(False)
 
 if __name__ == '__main__':
     main()
