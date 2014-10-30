@@ -11,6 +11,7 @@
 
 
 import telnet as tel
+import xml.etree.ElementTree # for py2exe
 import xml.etree.cElementTree as et
 
 from time import sleep
