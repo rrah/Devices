@@ -17,8 +17,8 @@ import device
 
 import telnet as tel
 
-host = '192.168.10.241'
-port = '9990'
+host = 'localhost'
+port = '9991'
 
 
 class DetailError(Exception):
@@ -97,7 +97,10 @@ class Videohub(tel.Telnet, device.Device):
 
     def getConnections(self):
 
-        return self.connections
+        try:
+            return self.connections
+        except AttributeError:
+            return []
 
     def getInputLabels(self):
 
@@ -118,7 +121,7 @@ class Videohub(tel.Telnet, device.Device):
         try:
             return self.outputLabels
         except AttributeError:
-            return[]
+            return []
 
     def recieveConnections(self, block):
 
@@ -160,7 +163,7 @@ class Videohub(tel.Telnet, device.Device):
         on the hub."""
 
         self.open()
-        text = self.read_until('\r\n', 0.2)
+        text = self.read_until('\r\n', 0.5)
         self.close()
         text = text.split('\n\n')
         for block in text:
@@ -187,7 +190,7 @@ class Videohub(tel.Telnet, device.Device):
 def main():
     hub = Videohub(host, port)
     hub.update(True)
-    print hub.getDetails()
+    print hub.getConnections()
 
 if __name__ == '__main__':
     main()
