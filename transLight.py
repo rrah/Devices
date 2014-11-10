@@ -9,13 +9,15 @@
 # Licence:     GPLv3
 #-------------------------------------------------------------------------------
 
+import device
+
 import telnet as tel
 from time import sleep
 
 host = 'localhost'
 port = 2004
 
-class TransmissionLight(tel.Telnet):
+class TransmissionLight(tel.Telnet, device.Device):
 
     t = False
     r = False

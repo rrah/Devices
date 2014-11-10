@@ -17,6 +17,7 @@ import xml.etree.cElementTree as et
 
 from math import floor
 
+import device
 
 host = 'strm1.ystv.york.ac.uk'
 port = 9815
@@ -25,7 +26,7 @@ port = 9815
 NoEvent = et.fromstring('<MCEvent></MCEvent>')
 
 
-class Tarantula(tel.Telnet):
+class Tarantula(tel.Telnet, device.Device):
 
 ##    nextLiveId = NoEvent
     nextLiveShow = NoEvent

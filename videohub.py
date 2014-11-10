@@ -13,6 +13,8 @@
 Module to connect to a videohub over ethernet. Should work with any
 Videohub, not just our micro"""
 
+import device
+
 import telnet as tel
 
 host = '192.168.10.241'
@@ -23,7 +25,7 @@ class DetailError(Exception):
     pass
 
 
-class Videohub(tel.Telnet):
+class Videohub(tel.Telnet, device.Device):
 
     """
     Videohub object to provide a wrapper around the ethernet interface
@@ -113,7 +115,10 @@ class Videohub(tel.Telnet):
         """
         return the labels currently set for the outputs"""
 
-        return self.outputLabels
+        try:
+            return self.outputLabels
+        except AttributeError:
+            return[]
 
     def recieveConnections(self, block):
 

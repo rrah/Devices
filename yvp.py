@@ -9,7 +9,7 @@
 # Licence:     GPLv3
 #-------------------------------------------------------------------------------
 
-
+import device
 import telnet as tel
 import xml.etree.ElementTree # for py2exe
 import xml.etree.cElementTree as et
@@ -17,7 +17,7 @@ import xml.etree.cElementTree as et
 from time import sleep
 
 
-class YVP(tel.Telnet):
+class YVP(tel.Telnet, device.Device):
 
     def update(self):
         self.open()
