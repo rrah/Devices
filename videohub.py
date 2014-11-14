@@ -104,6 +104,11 @@ class Videohub(tel.Telnet, device.Device):
 
     def getInputLabels(self):
 
+        DeprecationWarning
+        return self.get_input_labels()
+
+    def get_input_labels(self):
+
         """
         return the labels currently set for the inputs"""
 
@@ -114,6 +119,11 @@ class Videohub(tel.Telnet, device.Device):
 		return self.name
 
     def getOutputLabels(self):
+
+        DeprecationWarning
+        return self.get_output_labels()
+
+    def get_output_labels(self):
 
         """
         return the labels currently set for the outputs"""
