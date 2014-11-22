@@ -39,7 +39,7 @@ class Videohub(tel.Telnet, device.Device):
         Send the connections to make to the router"""
 
         self.open()
-        self.read_until('\r\n', 0.1)
+        self.read_until('\r\n', 0.5)
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
 
