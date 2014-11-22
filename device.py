@@ -12,8 +12,8 @@ class Device():
 
     def getName(self):
 
-        DeprecationWarning
-        self.get_name
+        raise DeprecationWarning
+        return self.get_name()
 
     def isEnabled(self):
 
@@ -21,7 +21,7 @@ class Device():
 
     def setEnabled(self, *args):
 
-        DeprecationWarning
+        raise DeprecationWarning
         self.set_enabled(*args)
 
     def set_enabled(self, enable = True):
@@ -41,12 +41,12 @@ class Device():
 
     def setHost(self, *args):
 
-        DeprecationWarning
+        raise DeprecationWarning
         return self.set_host(*args)
 
     def setPort(self, *args):
 
-        DeprecationWarning
+        raise DeprecationWarning
         return self.set_port(*args)
 
     def set_host(self, host):
