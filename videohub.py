@@ -95,6 +95,10 @@ class Videohub(tel.Telnet, device.Device):
                 except KeyError:
                     raise DetailError('Unknown detail')
 
+    def get_map(self):
+
+        return self.getConnections()
+
     def getConnections(self):
 
         try:
