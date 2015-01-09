@@ -103,7 +103,7 @@ class Telnet(tel.Telnet):
 
         self.debuglevel = DEBUGLEVEL
         self.host = host
-        self.port = port
+        self.port = int(port)
         self.timeout = timeout
         self.sock = None
         self.rawq = ''
