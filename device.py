@@ -5,8 +5,13 @@ class Device():
     _lock = threading.RLock()
 
     enabled = True
+    name = None
 
     def get_name(self):
+
+        """
+        Get the name of the device.
+        By default this is None"""
 
         return self.name
 
@@ -17,12 +22,17 @@ class Device():
 
     def isEnabled(self):
 
+        raise DeprecationWarning
         return self.enabled
 
     def setEnabled(self, *args):
 
         raise DeprecationWarning
         self.set_enabled(*args)
+
+    def is_enabled(self):
+
+        self.enabled
 
     def set_enabled(self, enable = True):
 
@@ -33,9 +43,19 @@ class Device():
 
     def getHost(self):
 
+        raise DeprecationWarning
         return self.host
 
     def getPort(self):
+
+        raise DeprecationWarning
+        return self.port
+
+    def get_host(self):
+
+        return self.host
+
+    def get_port(self):
 
         return self.port
 
