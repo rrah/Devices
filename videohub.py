@@ -17,6 +17,8 @@ import device
 
 import telnet as tel
 
+from time import sleep
+
 host = 'localhost'
 port = '9991'
 
@@ -39,7 +41,9 @@ class Videohub(tel.Telnet, device.Device):
         Send the connections to make to the router"""
 
         self.open()
-        self.read_until('\r\n', 0.5)
+        # Don't know why this needs to be here, but doesn't work without
+        self.read_until('\r\n', 0.05)
+
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
 
