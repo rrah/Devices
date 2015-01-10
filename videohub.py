@@ -34,6 +34,7 @@ class Videohub(tel.Telnet, device.Device):
     along with telnet stuff."""
 
     inputLabels = []
+    outputLabels = []
 
     def setConnection(self, in_, out):
 
