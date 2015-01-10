@@ -32,7 +32,7 @@ class Device():
 
     def is_enabled(self):
 
-        self.enabled
+        return self.enabled
 
     def set_enabled(self, enable = True):
 
@@ -77,13 +77,13 @@ class Device():
 
         self.port = port
 
-    def acquire(self):
+    def acquire(self, *args, **kwargs):
 
-        self._lock.acquire()
+        self._lock.acquire(*args, **kwargs)
 
-    def release(self):
+    def release(self, *args, **kwargs):
 
-        self._lock.release()
+        self._lock.release(*args, **kwargs)
 
     def __enter__(self):
 
