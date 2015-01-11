@@ -13,6 +13,8 @@
 Module to connect to a videohub over ethernet. Should work with any
 Videohub, not just our micro"""
 
+import logging
+
 import device
 
 import telnet as tel
@@ -42,14 +44,29 @@ class Videohub(tel.Telnet, device.Device):
         list map_ : routing changes to make in form of (input, output)
         Make the relevant routing changes."""
 
-        msg = 'video output routing:\n'
+        msg = 'VIDEO OUTPUT ROUTING:\n'
         for link in map_:
             msg += '{} {}\n'.format(link[1], link[0])
         msg += '\n'
 
         self.open()
+
+        # Get all the send data
         read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+
+        # Then send ours
         self.write(msg)
+        read = self.read_until('\n\n')
+        if read.strip() == 'ACK':
+            logging.debug('Message Acknowledged')
+        else:
+            logging.warning('Message not acknowledged')
+
         self.close()
 
     def setConnection(self, in_, out):
