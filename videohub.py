@@ -36,6 +36,22 @@ class Videohub(tel.Telnet, device.Device):
     inputLabels = []
     outputLabels = []
 
+    def set_map(self, map_):
+
+        """
+        list map_ : routing changes to make in form of (input, output)
+        Make the relevant routing changes."""
+
+        msg = 'video output routing:\n'
+        for link in map_:
+            msg += '{} {}\n'.format(link[1], link[0])
+        msg += '\n'
+
+        self.open()
+        read = self.read_until('\n\n')
+        self.write(msg)
+        self.close()
+
     def setConnection(self, in_, out):
 
         """
@@ -43,8 +59,8 @@ class Videohub(tel.Telnet, device.Device):
 
         self.open()
         # Don't know why this needs to be here, but doesn't work without
-        self.read_until('\r\n', 0.1)
-
+        read = self.read_until('\n\n')
+        print read
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
 
