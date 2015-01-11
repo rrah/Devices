@@ -75,7 +75,7 @@ class Device():
 
     def set_port(self, port):
 
-        self.port = port
+        self.port = int(port)
 
     def acquire(self, *args, **kwargs):
 

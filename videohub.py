@@ -43,7 +43,7 @@ class Videohub(tel.Telnet, device.Device):
 
         self.open()
         # Don't know why this needs to be here, but doesn't work without
-        self.read_until('\r\n', 0.05)
+        self.read_until('\r\n', 0.1)
 
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
@@ -171,7 +171,7 @@ class Videohub(tel.Telnet, device.Device):
 
         block = block.split('\n')
         block = block[1:]
-
+        self.inputLabels = []
         for part in block:
             self.inputLabels.append(part.split(' ', 1))
 
