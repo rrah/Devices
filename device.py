@@ -15,6 +15,14 @@ class Device():
 
         return self.name
 
+    def get_full_name(self):
+
+        """
+        For when stuff wants to use a longer name
+        than above"""
+
+        return self.get_name()
+
     def getName(self):
 
         raise DeprecationWarning

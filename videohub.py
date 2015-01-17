@@ -77,7 +77,7 @@ class Videohub(tel.Telnet, device.Device):
         self.open()
         # Don't know why this needs to be here, but doesn't work without
         read = self.read_until('\n\n')
-        print read
+
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
 
