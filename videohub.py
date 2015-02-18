@@ -37,6 +37,19 @@ class Videohub(tel.Telnet, device.Device):
 
     inputLabels = []
     outputLabels = []
+    
+    def read_preamble(self):
+        
+        """
+        Reads all the stuff that is first sent down the connection, before disgarding it all.
+        For when a message wants to be sent"""
+        
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
+        read = self.read_until('\n\n')
 
     def set_map(self, map_):
 
@@ -52,12 +65,7 @@ class Videohub(tel.Telnet, device.Device):
         self.open()
 
         # Get all the send data
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
+        self.read_preamble()
 
         # Then send ours
         self.write(msg)
@@ -94,22 +102,43 @@ class Videohub(tel.Telnet, device.Device):
         for part in block:
             part = part.split(': ')
             self.details[part[0]] = part[1]
+            
+    def set_input_labels(self, labels):
+        
+        self.set_labels(labels, 'in')
+        
+    def set_output_labels(self, labels):
+        
+        self.set_labels(labels, 'out')
 
-
-    def setLabels(self, labels, type_):
+    def set_labels(self, labels, type_):
+        
+        """
+        list labels = list of tuples with the label information
+        string type = either 'in' or 'out'"""
+        
 
         if type_ == 'in':
-            message = 'input labels:\n'
+            msg = 'input labels:\n'
         elif type_ == 'out':
-            message = 'output labels:\n'
+            msg = 'output labels:\n'
         else:
             raise TypeError('Unknow label type')
         for label in labels:
-            message += ('{} {}\n'.format(label[0], label[1]))
-        message += '\n'
+            msg += ('{} {}\n'.format(label[0], label[1]))
+        msg += '\n'
         self.open()
-        self.write(message)
-        self.update()
+        # Get all the send data
+        self.read_preamble()
+
+        # Then send ours
+        self.write(msg)
+        read = self.read_until('\n\n')
+        if read.strip() == 'ACK':
+            logging.debug('Message Acknowledged')
+        else:
+            logging.warning('Message not acknowledged')
+
         self.close()
 
 
