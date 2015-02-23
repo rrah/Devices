@@ -19,7 +19,7 @@ import device
 
 import telnet as tel
 
-from time import sleep
+##from time import sleep
 
 host = 'localhost'
 port = '9991'
@@ -44,12 +44,12 @@ class Videohub(tel.Telnet, device.Device):
         Reads all the stuff that is first sent down the connection, before disgarding it all.
         For when a message wants to be sent"""
         
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
-        read = self.read_until('\n\n')
+        self.read_until('\n\n')
+        self.read_until('\n\n')
+        self.read_until('\n\n')
+        self.read_until('\n\n')
+        self.read_until('\n\n')
+        self.read_until('\n\n')
 
     def set_map(self, map_):
 
@@ -84,7 +84,7 @@ class Videohub(tel.Telnet, device.Device):
 
         self.open()
         # Don't know why this needs to be here, but doesn't work without
-        read = self.read_until('\n\n')
+        self.read_until('\n\n')
 
         self.write('video output routing:\n{} {}\n\n'.format(out, in_))
         self.close()
@@ -187,7 +187,7 @@ class Videohub(tel.Telnet, device.Device):
 
     def getName(self):
 
-		return self.name
+        return self.name
 
     def getOutputLabels(self):
 

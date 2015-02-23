@@ -97,6 +97,6 @@ class Device():
 
         self.acquire()
 
-    def __exit__(self, type, value, traceback):
+    def __exit__(self, type_, value, traceback):
 
         self.release()

@@ -2,6 +2,8 @@ import socket
 
 import device as dev
 
+import copy
+
 from binascii import hexlify
 
 from time import sleep
@@ -18,8 +20,19 @@ class Vikinx(dev.Device):
                             (5, 'Multi 2'), (6, 'Multi 3'), (7, 'Multi 4'), (8, 'Multi 5'),
                             (9, 'Multi 6'), (10, 'Multi 7'), (11, 'Multi 8'), (12, 'Clean feed'),
                             (13, 'Multi Patch'), (14, 'Corio'), (15, 'Dirty feed')]}
-    routing = []
-    connected = False
+
+    def set_input_labels(self, labels):
+        
+        self.set_labels(labels, 'inputs')
+        
+    def set_output_labels(self, labels):
+        
+        self.set_labels(labels, 'outputs')
+            
+    def set_labels(self, labels, type_):
+        
+        for label in labels:
+            self.pending_labels[type_][label[0]] = label
 
     def get_full_name(self):
 
@@ -49,8 +62,10 @@ class Vikinx(dev.Device):
         string = 'a0{}{}'.format(out, in_)
         self.open()
         self.write(string)
-        sleep(0.1)
-        self.read(2)
+        try:
+            self.read(2)
+        except socket.timeout:
+            pass # No change to routing
         self.close()
 
     def get_map(self):
@@ -61,6 +76,7 @@ class Vikinx(dev.Device):
 
         if not self.isConnected():
             self.socket = socket.create_connection((self.host, self.port))
+            self.socket.settimeout(0.5)
             self.setConnected(True)
 
     def write(self, text):
@@ -68,11 +84,25 @@ class Vikinx(dev.Device):
         if type(text) == type(str):
             raise TypeError('Must be string')
         else:
-            self.socket.send(bytearray.fromhex(text))
+            return self.socket.sendall(bytearray.fromhex(text))
 
-    def read(self, bytes = 256):
+    def read(self, bytes_ = 256):
 
-        return hexlify(self.socket.recv(bytes))
+        return hexlify(self.socket.recv(bytes_))
+    
+    def read_until(self, target = None):
+        
+        msg = ''
+        size = len(target) / 2
+        while True:
+            read = self.read(size)
+            if read == target:
+                msg += read
+                break
+            else:
+                msg += read
+                
+        return msg
 
     def isConnected(self):
 
@@ -91,6 +121,7 @@ class Vikinx(dev.Device):
     def close(self):
 
         if self.isConnected():
+            self.socket.shutdown(socket.SHUT_RD)
             self.socket.close()
             self.setConnected(False)
 
@@ -102,29 +133,44 @@ class Vikinx(dev.Device):
 
         self.open()
         self.write('c000')
-        sleep(0.4)
-        output = self.read()
+        output = self.read_until('c000')
         self.close()
         self.routing = []
         for i in range(0, len(output)/6):
             self.routing.append([int(output[i * 6 + 2:i * 6 + 4], 16),
                                          int(output[i * 6 + 4:i * 6 + 6], 16)])
+        
+        # Check if labels are waiting to be changed
+        if cmp(self.pending_labels, self.labels) is not 0:
+            self.labels = copy.deepcopy(self.pending_labels)
 
     def __init__(self, host, port):
-
+        
+        self.connected = False
         self.host = host
         self.port = int(port)
         self.name = 'vik'
-        self.labels = self._defualt_labels
+        self.labels = copy.deepcopy(self._defualt_labels)
+        self.pending_labels = copy.deepcopy(self._defualt_labels)
+        self.routing = []
 
 
 
 def main():
-    host = '192.168.0.105'
-    port = 2001
-    vik = Vikinx(host, port)
-    vik.update()
-    print vik.getMap()
+    try:
+        host = 'localhost'
+        port = 2004
+        vik = Vikinx(host, port)
+        vik.update()
+        print vik.get_map()
+        vik.set_map([(1, 7)])
+        print 'pause'
+        sleep(1)
+        vik.update()
+        print vik.get_map()
+    except:
+        vik.close()
+        raise
 
 if __name__ == '__main__':
     main()
