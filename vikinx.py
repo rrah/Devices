@@ -144,8 +144,11 @@ class Vikinx(dev.Device):
         if cmp(self.pending_labels, self.labels) is not 0:
             self.labels = copy.deepcopy(self.pending_labels)
 
-    def __init__(self, host, port):
+    def __init__(self, host, port, default_labels = None):
         
+        # Set the new default labels if required
+        if default_labels is not None:
+            self._defualt_labels = copy.deepcopy(default_labels)
         self.connected = False
         self.host = host
         self.port = int(port)
