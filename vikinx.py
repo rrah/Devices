@@ -1,3 +1,12 @@
+#-------------------------------------------------------------------------------
+# Name:        vikinx
+# Purpose:     Wrapper for the vikinx serial api
+#
+# Author:      Robert Walker
+#
+# Copyright:   (c) Robert Walker 2014 - 15
+#-------------------------------------------------------------------------------
+
 import socket
 
 import device as dev
@@ -6,7 +15,11 @@ import copy
 
 from binascii import hexlify
 
-from time import sleep
+from time import sleep, time
+
+
+# Global variables
+TIMEOUT = 0.5
 
 
 class Vikinx(dev.Device):
@@ -75,8 +88,8 @@ class Vikinx(dev.Device):
     def open(self):
 
         if not self.isConnected():
-            self.socket = socket.create_connection((self.host, self.port))
-            self.socket.settimeout(0.5)
+            self.socket = socket.create_connection((self.host, self.port), TIMEOUT)
+            self.socket.settimeout(TIMEOUT)
             self.setConnected(True)
 
     def write(self, text):
@@ -94,7 +107,10 @@ class Vikinx(dev.Device):
         
         msg = ''
         size = len(target) / 2
+        start_time = time()
         while True:
+            if time() - start_time:
+                raise socket.timeout
             read = self.read(size)
             if read == target:
                 msg += read

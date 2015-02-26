@@ -5,21 +5,14 @@
 # Author:      Robert Walker
 #
 # Created:     08/11/2013
-# Copyright:   (c) Robert Walker 2013
-# Licence:     GPLv3
+# Copyright:   (c) Robert Walker 2013 - 15
 #-------------------------------------------------------------------------------
-
-"""
-Module to connect to a videohub over ethernet. Should work with any
-Videohub, not just our micro"""
 
 import logging
 
 import device
 
 import telnet as tel
-
-##from time import sleep
 
 host = 'localhost'
 port = '9991'
@@ -213,7 +206,7 @@ class Videohub(tel.Telnet, device.Device):
         block = block[1:]
         self.connections = []
         for part in block:
-            self.connections.append(part.split(' ', 1))
+            self.connections.append([int(x) for x in part.split(' ', 1)])
 
     def recieveOutputLabels(self, block):
 
