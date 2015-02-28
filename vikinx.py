@@ -109,7 +109,7 @@ class Vikinx(dev.Device):
         size = len(target) / 2
         start_time = time()
         while True:
-            if time() - start_time:
+            if time() - start_time > 3:
                 raise socket.timeout
             read = self.read(size)
             if read == target:
