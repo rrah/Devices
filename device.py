@@ -7,6 +7,14 @@ class Device():
     enabled = True
     name = None
 
+    def get_input_labels(self):
+        
+        return None
+    
+    def get_output_labels(self):
+        
+        return None
+
     def get_name(self):
 
         """

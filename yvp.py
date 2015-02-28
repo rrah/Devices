@@ -52,8 +52,8 @@ class YVP(tel.Telnet, device.Device):
             links. append(link)
         self.map = links
 
-    def getMap(self):
-
+    def get_map(self):
+        
         return self.map
 
     def __init__(self, host, port):
