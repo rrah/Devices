@@ -40,13 +40,13 @@ class YVP(tel.Telnet, device.Device):
             except et.ParseError:
                 raise TypeError('Must be an xml element')
         if stat.tag == 'map':
-            map = stat
+            map_ = stat
         elif element.findall('map') is None:
-            map = stat.findall('map')[0]
+            map_ = stat.findall('map')[0]
         else:
             raise ValueError('No map element found')
         links = []
-        for link in map.findall('link'):
+        for link in map_.findall('link'):
             link = link.text.split(',')
             link = (int(link[0]), int(link[1]))
             links. append(link)
